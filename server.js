@@ -13,7 +13,8 @@ function logger(req, res, next) {
   const ts = new Date();
   console.log("-------------------------");
   console.log(`[${ts.toLocaleTimeString()}] ${req.method} ${req.url}`);
-  console.log(`Request body: ${req.body}`);
+  console.log(`Request body:`);
+  console.log(req.body);
   console.log("-------------------------");
   next();
 }

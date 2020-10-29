@@ -2,7 +2,7 @@ const express = require('express');
 const Posts = require('./postDb');
 const router = express.Router();
 
-router.get('/', validatePostId, (req, res) => {
+router.get('/', (req, res) => {
   Posts.get()
     .then(data=>{
       res.status(200).json(data);
@@ -13,8 +13,8 @@ router.get('/', validatePostId, (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id', validatePostId, (req, res) => {
+  res.status(200).json(req.post);
 });
 
 router.delete('/:id', (req, res) => {
@@ -27,9 +27,33 @@ router.put('/:id', (req, res) => {
 
 // custom middleware
 
+// fix: the error inside next just shows up as [object Object]
+// data type getting changed somewhere as it's passed back? 
+// maybe json or stringify?
+
+// res returns correctly
+
 function validatePostId(req, res, next) {
-  console.log("POST HAS BEEN VALIDATED");
-  next();
+  const { id } = req.params;
+
+  Posts.getById(id)
+    .then(data =>{
+
+      if (!data){
+        console.log("INVALID POST");
+        next({code: 404, message: 'Not found: No post exists with that ID'});
+      }else{
+        console.log("VALID POST");
+        console.log(data);
+        req.post=data;
+        next();
+      }
+    })
+    .catch(err=>{
+      console.log(err.message);
+      next({code: 500, message: 'The server went boom'});
+    })
+  
 }
 
 module.exports = router;
