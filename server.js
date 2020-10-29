@@ -32,6 +32,10 @@ server.use('/api/posts', postRouter);
 //server config------------------------
 
 server.get('/', (req, res) => {
+  res.send(`<h2>Welcome!</h2>`);
+});
+
+server.get('/api/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
