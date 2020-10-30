@@ -1,7 +1,8 @@
 const express = require('express');
 
 //require functions from the db models:
-const { getById } = require('../posts/postDb');
+const Posts = require('../posts/postDb');
+const { getUserPosts } = require('./userDb');
 const Users = require('./userDb');
 
 //instantiate router:
@@ -52,9 +53,21 @@ router.get('/:id', validateUserId, (req, res) => {
   res.status(200).send(req.user)
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // GET /api/users/:id/posts
-  // [ ]
+  // [x]
+  const {id}=req.params;
+  
+  getUserPosts(id)
+    .then(data=>{
+      res.status(200).json(data);
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error retrieving user posts'});
+    });
+
+
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
