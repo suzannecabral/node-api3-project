@@ -57,9 +57,20 @@ router.get('/:id/posts', (req, res) => {
   // [ ]
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // DELETE /api/users/:id
   // [ ]
+
+  const {id} = req.params;
+  Users.remove(id)
+    .then(()=>{
+      res.status(200).json({message:'user deleted successfully'});
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error deleting user'});
+    })
+
 });
 
 router.put('/:id', validateUserId, validateUser, (req, res) => {
@@ -70,8 +81,7 @@ router.put('/:id', validateUserId, validateUser, (req, res) => {
   const updatedUser = {id, name}
 
   Users.update(id, updatedUser)
-    .then(data=>{
-      console.log(data);
+    .then(()=>{
       res.status(200).json({message:'User updated successfully'});
     })
     .catch(err=>{
