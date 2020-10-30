@@ -62,9 +62,22 @@ router.delete('/:id', (req, res) => {
   // [ ]
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // PUT /api/users/:id
-  // [ ]
+  // [x]
+  const {id} = req.params;
+  const {name} = req.body;
+  const updatedUser = {id, name}
+
+  Users.update(id, updatedUser)
+    .then(data=>{
+      console.log(data);
+      res.status(200).json({message:'User updated successfully'});
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error updating user'});
+    });
 });
 
 //custom middleware
@@ -136,6 +149,7 @@ function duplicateUser(req, res, next){
       res.status(500).json({message:'server error validating user'});
     })
 }
+
 
 //validatePost
 // [ ]
