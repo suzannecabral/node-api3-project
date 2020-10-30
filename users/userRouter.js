@@ -1,9 +1,9 @@
 const express = require('express');
-const { insert } = require('../data/dbConfig');
+// const { insert } = require('../data/dbConfig');
+// const { getUserPosts } = require('./userDb');
 
 //require functions from the db models:
 const Posts = require('../posts/postDb');
-const { getUserPosts } = require('./userDb');
 const Users = require('./userDb');
 
 //instantiate router:
@@ -12,7 +12,7 @@ const router = express.Router();
 //---------------------------
 // ENDPOINTS
 //---------------------------
-// [ ]
+// [x]
 
 router.post('/', validateUser, duplicateUser, (req, res) => {
   //POST /api/users/
@@ -73,7 +73,7 @@ router.get('/:id/posts', validateUserId, (req, res) => {
   // [x]
   const {id}=req.params;
   
-  getUserPosts(id)
+  Users.getUserPosts(id)
     .then(data=>{
       res.status(200).json(data);
     })
