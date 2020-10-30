@@ -1,4 +1,5 @@
 const express = require('express');
+const server = require('../server');
 const Users = require('./userDb');
 const router = express.Router();
 
@@ -15,14 +16,21 @@ router.post('/:id/posts', (req, res) => {
   // do your magic!
 });
 
-//[ ]
+//[x]
 router.get('/', (req, res) => {
-  res.status(200).json({message:'THIS IS AN ENDPOINT'});
+  Users.get()
+    .then(data=>{
+      res.status(200).json(data);
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error while getting user list'});
+    })
 });
 
-//[ ]
-router.get('/:id', (req, res) => {
-  // do your magic!
+//[x]
+router.get('/:id', validateUserId, (req, res) => {
+  res.status(200).json(req.user);
 });
 
 //[ ]
@@ -45,8 +53,23 @@ router.put('/:id', (req, res) => {
 
 //[ ]
 function validateUserId(req, res, next) {
-  // do your magic!
-}
+  //check that there is a user with that id
+  const {id} = req.params;
+
+  Users.getById(id)
+    .then(data=>{
+      if(data){
+        req.user = data;
+        next();
+      }else{
+        res.status(404).json({message:`User not found with id: ${id}`});
+      }
+    })
+    .catch(err=>{
+      console.log(err)
+      res.status(500).json({message:'Server error while validating user id'});
+    })
+}   
 
 //[ ]
 function validateUser(req, res, next) {
