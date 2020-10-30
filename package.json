@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node index.js",
         "server": "nodemon index.js",
-        "postinstall":"cd client && cd user-posts-api && npm i && npm run build"
+        "postinstall":"cd client && npm i && npm run build"
     },
     "repository": {
         "type": "git",
