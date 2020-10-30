@@ -29,8 +29,11 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // GET /api/users/:id
+  res.status(200).send(req.user)
+  //test error cases
+
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -48,7 +51,30 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // const {id} = req.params
+  const {id} = req.params;
+
+  Users.getById(id)
+    .then(data=>{
+
+      if(data){
+        console.log("VALID ID");
+        console.log(data);
+        req.user = data;
+        next();
+      }else{
+        console.log("INVALID ID");
+        console.log(data);
+        res.status(400).json({message:`There is no user with id: ${id}`});
+        next();
+      }
+
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error while retrieving user id'});
+      next();
+    })
+
 
   // getById(id)
   //   .then(data=>{
