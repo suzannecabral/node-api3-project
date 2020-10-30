@@ -26,6 +26,8 @@ server.use(express.json());
 server.use(logger);
 
 //use router
+server.use('/api/users', userRouter);
+server.use('/api/posts', postRouter);
 
 //default endpoints
 server.get('/', (req,res)=>{

@@ -1,5 +1,5 @@
 const express = require('express');
-
+const Users = require('./userDb');
 const router = express.Router();
 
 //[ ]
@@ -17,7 +17,7 @@ router.post('/:id/posts', (req, res) => {
 
 //[ ]
 router.get('/', (req, res) => {
-  // do your magic!
+  res.status(200).json({message:'THIS IS AN ENDPOINT'});
 });
 
 //[ ]
