@@ -3,7 +3,7 @@ const express = require('express');
 //require functions from the db models:
 
 // const { getById } = require('../posts/postDb');
-// const Users = require('./userDb');
+const Users = require('./userDb');
 
 
 //instantiate router:
@@ -19,7 +19,14 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', (req, res) => {
   // GET /api/users/
-  res.status(200).json({message:'Users list will go here'});
+  Users.get()
+    .then(data=>{
+      res.status(200).json({data});
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({message:'Server error  retrieving users.'});
+    })
 });
 
 router.get('/:id', (req, res) => {
