@@ -1,5 +1,6 @@
 const express = require('express');
 const postRouter = require('./posts/postRouter');
+const userRouter = require('./users/userRouter');
 
 const server = express();
 
@@ -17,8 +18,7 @@ function logger(req, res, next) {
   console.log(req.body);
   console.log("-------------------------");
   next();
-}
-
+}       
 
 //apply middleware------------------------
 
@@ -27,6 +27,7 @@ server.use(logger);
 
 //use router and its middleware
 server.use('/api/posts', postRouter);
+server.use('/api/users', userRouter);
 
 
 //server config------------------------

@@ -1,39 +1,64 @@
 const express = require('express');
 
+//require functions from the db models:
+
+// const { getById } = require('../posts/postDb');
+// const Users = require('./userDb');
+
+
+//instantiate router:
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  // do your magic!
+  //POST /api/users/
 });
 
 router.post('/:id/posts', (req, res) => {
-  // do your magic!
+  // POST /api/users/:id/posts
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  // GET /api/users/
+  res.status(200).json({message:'Users list will go here'});
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  // GET /api/users/:id
 });
 
 router.get('/:id/posts', (req, res) => {
-  // do your magic!
+  // GET /api/users/:id/posts
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  // DELETE /api/users/:id
 });
 
 router.put('/:id', (req, res) => {
-  // do your magic!
+  // PUT /api/users/:id
 });
 
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  // const {id} = req.params
+
+  // getById(id)
+  //   .then(data=>{
+  //     console.log("VALIDATE_USER_ID:");
+  //     console.log(data);
+  //     next();
+  //     //test this before moving on
+  //     //next step if/then for error msg
+  //     //requests are not gteting into user router
+      
+      
+
+  //   })
+  //   .catch(err=>{
+  //     console.log(err);
+  //     res.status(500).json({message:"server error retrieving users"})
+  //   });
 }
 
 function validateUser(req, res, next) {
