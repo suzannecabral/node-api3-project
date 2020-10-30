@@ -1,7 +1,7 @@
 const express = require('express');
 
 //require functions from the db models:
-// const { getById } = require('../posts/postDb');
+const { getById } = require('../posts/postDb');
 const Users = require('./userDb');
 
 //instantiate router:
@@ -59,7 +59,7 @@ router.get('/:id/posts', (req, res) => {
 
 router.delete('/:id', validateUserId, (req, res) => {
   // DELETE /api/users/:id
-  // [ ]
+  // [x]
 
   const {id} = req.params;
   Users.remove(id)
@@ -91,7 +91,7 @@ router.put('/:id', validateUserId, validateUser, (req, res) => {
 });
 
 //custom middleware
-// [ ]
+// [x]
 
 //validateUserId
 // [x]
@@ -132,7 +132,7 @@ function validateUser(req, res, next) {
       next();
       //next check that name does not exist
     }else{
-      res.status(200).json({message:"missing required name field"});
+      res.status(400).json({message:"missing required name field"});
     }
   }else{
     res.status(400).json({message:"missing user data"});
@@ -162,9 +162,20 @@ function duplicateUser(req, res, next){
 
 
 //validatePost
-// [ ]
+// [x]
 function validatePost(req, res, next) {
-  // do your magic!
+  //check for req body
+  if(Object.keys(req.body).length > 0){
+    //check for input ("text" key)
+    if(req.body.text){
+      //passes the check, continue
+      next();
+    }else{
+      res.status(400).json({message:"missing required text field"});
+    }
+  }else{
+    res.status(400).json({message:"missing user data"});
+  }
 }
 
 module.exports = router;
