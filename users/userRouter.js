@@ -1,4 +1,5 @@
 const express = require('express');
+const { insert } = require('../data/dbConfig');
 
 //require functions from the db models:
 const Posts = require('../posts/postDb');
@@ -21,7 +22,7 @@ router.post('/', validateUser, duplicateUser, (req, res) => {
   Users.insert(newUser)
     .then(data=>{
       console.log(data);
-      res.status(201).json("Created successfully");
+      res.status(201).json(data);
     })
     .catch(err=>{
       console.log(err);
@@ -29,9 +30,23 @@ router.post('/', validateUser, duplicateUser, (req, res) => {
     });
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   // POST /api/users/:id/posts
   // [ ]
+  const user_id = req.params.id;
+  const {text} = req.body;
+  const newPost = {text, user_id};
+
+  Posts.insert(newPost)
+    .then(data=>{
+      res.status(201).json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({message:'Server error creating new post'});
+    });
+
+
 });
 
 router.get('/', (req, res) => {
